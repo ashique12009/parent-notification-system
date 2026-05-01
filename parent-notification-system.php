@@ -19,9 +19,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'PNS_PATH', plugin_dir_path( __FILE__ ) );
 
 /**
- * Loader file include
+ * Roles class load
+ */
+require_once PNS_PATH . 'includes/class-roles.php';
+
+/**
+ * Loader class load
  */
 require_once PNS_PATH . 'includes/class-loader.php';
+
+/**
+ * Activation Hook
+ */
+register_activation_hook( __FILE__, array( 'PNS_Roles', 'activate' ) );
+
+/**
+ * Deactivation Hook
+ */
+register_deactivation_hook( __FILE__, array( 'PNS_Roles', 'deactivate' ) );
 
 /**
  * Plugin start
