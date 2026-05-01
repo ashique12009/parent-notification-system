@@ -19,6 +19,8 @@ class PNS_Loader {
 		// Example:
 		// require_once PNS_PATH . 'includes/class-cpt.php';
 
+    // CPT file include
+	  require_once PNS_PATH . 'includes/class-cpt.php';
 	}
 
   /**
@@ -29,6 +31,9 @@ class PNS_Loader {
 		// সব hook/action এখান থেকে call হবে
 
 		add_action( 'init', array( $this, 'plugin_init' ) );
+
+    // CPT object create
+	  new PNS_CPT();
 
 	}
 
@@ -41,7 +46,6 @@ class PNS_Loader {
 		// future এ CPT, roles etc run হবে
 
 		error_log( 'PNS Plugin Loaded Successfully' );
-
 	}
 
 }
