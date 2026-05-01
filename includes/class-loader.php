@@ -55,11 +55,8 @@ class PNS_Loader {
 	 * init hook এ run হবে
 	 */
 	public function plugin_init() {
-
 		// এখন শুধু test message
 		// future এ CPT, roles etc run হবে
-
-		write_log( 'PNS Plugin Loaded Successfully' );
 	}
 
 }

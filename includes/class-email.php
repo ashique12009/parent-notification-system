@@ -24,7 +24,9 @@ class PNS_Email {
 		/**
 		 * Publish হলে email send
 		 */
-		add_action( 'publish_notice_board', array( $this, 'send_notice_email' ), 10, 2 );
+		add_action( 'transition_post_status', array( $this, 'maybe_send_email' ), 10, 3 );
+
+    add_action( 'pns_send_email_event', array( $this, 'send_notice_email_by_id' ) );
 	}
 
 	/**
@@ -102,35 +104,64 @@ class PNS_Email {
 		}
 	}
 
+  public function maybe_send_email( $new_status, $old_status, $post ) {
+
+    write_log( "Transitioning post ID: {$post->ID} from {$old_status} to {$new_status}" );
+
+    // only our CPT
+    if ( $post->post_type !== 'notice_board' ) {
+      return;
+    }
+
+    // only when publish first time
+    if ( $old_status === 'publish' || $new_status !== 'publish' ) {
+      return;
+    }
+
+    // IMPORTANT: delay execution slightly (meta ready করার জন্য)
+		wp_schedule_single_event( time() + 100, 'pns_send_email_event', array( $post->ID ) );
+  }
+
 	/**
 	 * Publish হলে email যাবে
 	 */
-	public function send_notice_email( $post_id, $post ) {
+	public function send_notice_email_by_id( $post_id ) {
 
-		$roles = get_post_meta( $post_id, '_pns_roles', true );
+    $post = get_post( $post_id );
 
-		if ( empty( $roles ) ) {
-			return;
-		}
+    if ( ! $post || $post->post_type !== 'notice_board' ) {
+      return;
+    }
 
-		foreach ( $roles as $role ) {
+    $roles = get_post_meta( $post_id, '_pns_roles', true );
 
-			$users = get_users(
-				array(
-					'role' => $role,
-				)
-			);
+    if ( empty( $roles ) || ! is_array( $roles ) ) {
+      write_log( "No roles found for post ID: {$post_id}" );
+      return;
+    }
 
-			foreach ( $users as $user ) {
+    write_log( "Cron triggered email for post ID: {$post_id}" );
 
-				$to      = $user->user_email;
-				$subject = $post->post_title;
-				$message = wp_strip_all_tags( $post->post_content );
+    foreach ( $roles as $role ) {
 
-				wp_mail( $to, $subject, $message );
+      $users = get_users( array(
+        'role' => $role,
+      ) );
 
-        write_log( "Email sent to: {$to} for role: {$role}" );
-			}
-		}
-	}
+      foreach ( $users as $user ) {
+
+        $to      = $user->user_email;
+        $subject = $post->post_title;
+        $message = wp_strip_all_tags( $post->post_content );
+
+        $sent = wp_mail( $to, $subject, $message );
+
+        if ( $sent ) {
+          write_log( "Email sent to: {$to}" );
+        } else {
+          write_log( "Email FAILED to: {$to}" );
+        }
+      }
+    }
+  }
 }
