@@ -13,7 +13,7 @@ class PNS_Plugin_Mailer {
     $phpmailer->Host = 'sandbox.smtp.mailtrap.io';
     $phpmailer->SMTPAuth = true;
     $phpmailer->Port = 2525;
-    // 🔥 wp-config.php থেকে read করা হচ্ছে
+    // Load credentials from wp-config.php
     $phpmailer->Username = defined('PNS_MAILTRAP_USERNAME') ? PNS_MAILTRAP_USERNAME : '';
     $phpmailer->Password = defined('PNS_MAILTRAP_PASSWORD') ? PNS_MAILTRAP_PASSWORD : '';
   }
