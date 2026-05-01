@@ -106,8 +106,6 @@ class PNS_Email {
 
   public function maybe_send_email( $new_status, $old_status, $post ) {
 
-    write_log( "Transitioning post ID: {$post->ID} from {$old_status} to {$new_status}" );
-
     // only our CPT
     if ( $post->post_type !== 'notice_board' ) {
       return;
