@@ -128,6 +128,8 @@ class PNS_Email {
 				$message = wp_strip_all_tags( $post->post_content );
 
 				wp_mail( $to, $subject, $message );
+
+        write_log( "Email sent to: {$to} for role: {$role}" );
 			}
 		}
 	}

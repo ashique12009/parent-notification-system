@@ -45,7 +45,7 @@ class PNS_Loader {
 	  new PNS_CPT();
 
     // Mailer config init
-    My_Plugin_Mailer::init();
+    PNS_Plugin_Mailer::init();
 
     // Email object create
     new PNS_Email();
