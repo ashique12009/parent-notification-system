@@ -21,6 +21,9 @@ class PNS_Loader {
 
     // CPT file include
 	  require_once PNS_PATH . 'includes/class-cpt.php';
+
+    // Email file include
+    require_once PNS_PATH . 'includes/class-email.php';
 	}
 
   /**
@@ -35,6 +38,8 @@ class PNS_Loader {
     // CPT object create
 	  new PNS_CPT();
 
+    // Email object create
+    new PNS_Email();
 	}
 
   /**
