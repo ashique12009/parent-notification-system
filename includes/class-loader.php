@@ -1,0 +1,47 @@
+<?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Main Loader Class
+ */
+class PNS_Loader {
+
+  /**
+	 * Constructor
+	 * object create হলে auto run হয়
+	 */
+	public function __construct() {
+
+		// Future classes include হবে এখানে
+		// Example:
+		// require_once PNS_PATH . 'includes/class-cpt.php';
+
+	}
+
+  /**
+	 * Plugin run function
+	 */
+	public function run() {
+
+		// সব hook/action এখান থেকে call হবে
+
+		add_action( 'init', array( $this, 'plugin_init' ) );
+
+	}
+
+  /**
+	 * init hook এ run হবে
+	 */
+	public function plugin_init() {
+
+		// এখন শুধু test message
+		// future এ CPT, roles etc run হবে
+
+		error_log( 'PNS Plugin Loaded Successfully' );
+
+	}
+
+}
