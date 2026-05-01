@@ -22,6 +22,12 @@ class PNS_Loader {
     // CPT file include
 	  require_once PNS_PATH . 'includes/class-cpt.php';
 
+    // Helper file include
+    require_once PNS_PATH . 'includes/helpers.php';
+
+    // Mailer file include
+    require_once PNS_PATH . 'includes/class-mailer.php';
+
     // Email file include
     require_once PNS_PATH . 'includes/class-email.php';
 	}
@@ -38,6 +44,9 @@ class PNS_Loader {
     // CPT object create
 	  new PNS_CPT();
 
+    // Mailer config init
+    My_Plugin_Mailer::init();
+
     // Email object create
     new PNS_Email();
 	}
@@ -50,7 +59,7 @@ class PNS_Loader {
 		// এখন শুধু test message
 		// future এ CPT, roles etc run হবে
 
-		error_log( 'PNS Plugin Loaded Successfully' );
+		write_log( 'PNS Plugin Loaded Successfully' );
 	}
 
 }
