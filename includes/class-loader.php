@@ -32,7 +32,7 @@ class PNS_Loader {
     require_once PNS_PATH . 'includes/class-email.php';
 
     // Email Queue Schedule Setup include
-    require_once PNS_PATH . 'db/email-queue-wp-env-setup.php';
+    require_once PNS_PATH . 'includes/email-queue-wp-env-setup.php';
 	}
 
   /**
