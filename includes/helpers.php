@@ -8,11 +8,18 @@ if ( ! function_exists( 'write_log' ) ) {
     if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
       $log_file = WP_CONTENT_DIR . '/debug.log';
 
+      // Ensure timezone
+      $timezone = new DateTimeZone('Europe/Helsinki');
+      $date     = new DateTime('now', $timezone);
+      $datetime = $date->format('Y-m-d H:i:s');
+
       if ( is_array( $data ) || is_object( $data ) ) {
-        error_log( print_r( $data, true ), 3, $log_file );
-      } else {
-        error_log( $data . PHP_EOL, 3, $log_file );
-      }
+				$log_message = '[' . $datetime . '] ' . print_r( $data, true ) . PHP_EOL;
+			} else {
+				$log_message = '[' . $datetime . '] ' . $data . PHP_EOL;
+			}
+
+			error_log( $log_message, 3, $log_file );
     }
   }
 }

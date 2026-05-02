@@ -29,9 +29,17 @@ require_once PNS_PATH . 'includes/class-roles.php';
 require_once PNS_PATH . 'includes/class-loader.php';
 
 /**
+ * Email Queue Table class load
+ */
+require_once PNS_PATH . 'db/email-queue-process-table.php';
+
+/**
  * Activation Hook
  */
 register_activation_hook( __FILE__, array( 'PNS_Roles', 'activate' ) );
+
+// Create email queue table on plugin activation
+register_activation_hook( __FILE__, array( 'PNS_Email_Queue_Table', 'create_table' ) );
 
 /**
  * Deactivation Hook
