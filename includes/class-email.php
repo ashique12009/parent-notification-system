@@ -116,8 +116,44 @@ class PNS_Email {
       return;
     }
 
+    $subject = 'New Post Published: ' . get_the_title($post->ID);
+    $message = "
+        <h2>{$post->post_title}</h2>
+        <p>A new notice has been published on our website.</p>
+        <p><a href='" . get_permalink($post->ID) . "'>Read the full notice</a></p>
+    ";
+
+    $roles = get_post_meta( $post->ID, '_pns_roles', true );
+    if ( empty( $roles ) || ! is_array( $roles ) ) {
+      write_log( "No roles found for post ID: {$post->ID}" );
+      return;
+    }
+
+    global $wpdb;
+
+    foreach ( $roles as $role ) {
+      $users = get_users( array(
+        'role' => $role,
+      ) );
+
+      foreach ( $users as $user ) {
+        $email = $user->user_email;
+
+        // Put this emails into the Queue (no wp_mail will send here!)
+        $wpdb->insert(
+          $wpdb->prefix . 'cta_email_queue',
+          [
+            'email'   => $email,
+            'subject' => $subject,
+            'message' => $message,
+            'status'  => 'pending'
+          ]
+        );
+      }
+    }
+
     // IMPORTANT: delay execution slightly (meta ready করার জন্য)
-		wp_schedule_single_event( time() + 100, 'pns_send_email_event', array( $post->ID ) );
+		//wp_schedule_single_event( time() + 100, 'pns_send_email_event', array( $post->ID ) );
   }
 
 	/**

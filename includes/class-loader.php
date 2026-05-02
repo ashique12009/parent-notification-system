@@ -30,6 +30,9 @@ class PNS_Loader {
 
     // Email file include
     require_once PNS_PATH . 'includes/class-email.php';
+
+    // Email Queue Schedule Setup include
+    require_once PNS_PATH . 'db/email-queue-wp-env-setup.php';
 	}
 
   /**
@@ -49,6 +52,9 @@ class PNS_Loader {
 
     // Email object create
     new PNS_Email();
+
+    // Email Queue Schedule Setup object create
+    new PNS_Email_Queue_Schedule_Setup();
 	}
 
   /**
