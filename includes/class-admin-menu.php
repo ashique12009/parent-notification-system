@@ -39,13 +39,12 @@ class PNS_Admin_Menu {
     );
   }
 
+  // Only load assets on our plugin page
   public function load_assets($hook) {
     // only our plugin page
     if (strpos($hook, 'pns-dashboard') === false) {
       return;
     }
-
-    write_log("Loading assets for hook: $hook");
 
     wp_enqueue_style(
       'pns-dashboard-css',
@@ -165,25 +164,8 @@ class PNS_Admin_Menu {
       )
     );
 
-    // parent emails
-    $parent_emails = $wpdb->get_var(
-      $wpdb->prepare(
-        "SELECT COUNT(*) FROM {$table} 
-			 WHERE status = %s AND subject LIKE %s",
-        'sent',
-        '%parent%'
-      )
-    );
-
-    // child emails
-    $child_emails = $wpdb->get_var(
-      $wpdb->prepare(
-        "SELECT COUNT(*) FROM {$table} 
-			 WHERE status = %s AND subject LIKE %s",
-        'sent',
-        '%child%'
-      )
-    );
+    $parent_emails = $this->count_role_sent_emails( 'parent' );
+	  $child_emails  = $this->count_role_sent_emails( 'child' );
 
     return [
       'total_notices' => $total_notices,
@@ -192,5 +174,76 @@ class PNS_Admin_Menu {
       'parent_emails' => $parent_emails,
       'child_emails'  => $child_emails,
     ];
+  }
+
+  /**
+   * Count sent emails by role
+   */
+  public function count_role_sent_emails( $role ) {
+    global $wpdb;
+
+    $table = $wpdb->prefix . 'pns_email_queue';
+
+    /**
+     * Step 1:
+     * Check if any notice targeted this role
+     */
+    $meta_exists = $wpdb->get_var(
+      $wpdb->prepare(
+        "SELECT COUNT(*) 
+        FROM {$wpdb->postmeta}
+        WHERE meta_key = %s
+        AND meta_value LIKE %s",
+        '_pns_roles',
+        '%' . $wpdb->esc_like( $role ) . '%'
+      )
+    );
+
+    if ( ! $meta_exists ) {
+      return 0;
+    }
+
+    /**
+     * Step 2:
+     * Get users by role
+     */
+    $users = get_users(
+      [
+        'role'   => $role,
+        'fields' => ['user_email'],
+      ]
+    );
+
+    if ( empty( $users ) ) {
+      return 0;
+    }
+
+    $emails = wp_list_pluck( $users, 'user_email' );
+
+    /**
+     * Step 3:
+     * Build placeholders safely
+     */
+    $placeholders = implode( ',', array_fill( 0, count( $emails ), '%s' ) );
+
+    $params = array_merge(
+      ['sent'],
+      $emails
+    );
+
+    /**
+     * Step 4:
+     * Count sent emails where queue.email in user emails
+     */
+    $sql = "
+      SELECT COUNT(*)
+      FROM {$table}
+      WHERE status = %s
+      AND email IN ($placeholders)
+    ";
+
+    return (int) $wpdb->get_var(
+      $wpdb->prepare( $sql, $params )
+    );
   }
 }
