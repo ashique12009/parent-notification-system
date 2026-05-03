@@ -29,7 +29,7 @@ class PNS_Loader {
     require_once PNS_PATH . 'includes/class-mailer.php';
 
     // Email Queue Schedule Setup include
-    require_once PNS_PATH . 'includes/email-queue-wp-env-setup.php';
+    require_once PNS_PATH . 'includes/email-queue-process.php';
     
     // Email file include
     require_once PNS_PATH . 'includes/class-email.php';
@@ -41,7 +41,6 @@ class PNS_Loader {
 	public function run() {
 
 		// সব hook/action এখান থেকে call হবে
-
 		add_action( 'init', array( $this, 'plugin_init' ) );
 
     // CPT object create
