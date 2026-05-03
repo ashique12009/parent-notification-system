@@ -33,6 +33,9 @@ class PNS_Loader {
     
     // Email file include
     require_once PNS_PATH . 'includes/class-email.php';
+
+    // API file include
+    require_once PNS_PATH . 'includes/class-api.php';
 	}
 
   /**
@@ -54,6 +57,9 @@ class PNS_Loader {
 
     // Email Queue Schedule Setup object create
     new PNS_Email_Queue_Schedule_Setup();
+
+    // API object create
+    new PNS_API();
 	}
 
   /**
