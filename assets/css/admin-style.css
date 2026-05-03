@@ -1,0 +1,80 @@
+/* Parent wrapper */
+.pns-dashboard {
+	padding: 20px;
+}
+
+/* Page title spacing */
+.pns-dashboard h1 {
+	margin-bottom: 20px;
+	font-size: 24px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+/* Flex container (instead of grid) */
+.pns-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+}
+
+/* Card style */
+.pns-card {
+	flex: 1 1 calc(33.333% - 20px);
+	background: #ffffff;
+	padding: 20px;
+	border-radius: 14px;
+	border: 1px solid #e5e7eb;
+	box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+	transition: all 0.25s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+/* hover effect */
+.pns-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 10px 25px rgba(0,0,0,0.10);
+	border-color: #cbd5e1;
+}
+
+/* number style */
+.pns-card h2 {
+	font-size: 30px;
+	margin: 0;
+	font-weight: 700;
+	color: #111827;
+}
+
+/* label */
+.pns-card p {
+	margin: 8px 0 0;
+	font-size: 14px;
+	color: #6b7280;
+}
+
+/* subtle left accent line (AdminLTE feel) */
+.pns-card::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 5px;
+	height: 100%;
+	background: #2271b1;
+	border-top-left-radius: 14px;
+	border-bottom-left-radius: 14px;
+}
+
+/* responsive */
+@media (max-width: 1024px) {
+	.pns-card {
+		flex: 1 1 calc(50% - 20px);
+	}
+}
+
+@media (max-width: 600px) {
+	.pns-card {
+		flex: 1 1 100%;
+	}
+}

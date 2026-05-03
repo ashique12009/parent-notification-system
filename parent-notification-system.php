@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * later include file load easy হবে
  */
 define( 'PNS_PATH', plugin_dir_path( __FILE__ ) );
+define( 'PNS_URL', plugin_dir_url( __FILE__ ) );
 
 // Roles class load
 require_once PNS_PATH . 'includes/class-roles.php';
