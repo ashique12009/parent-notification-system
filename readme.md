@@ -14,10 +14,12 @@ A professional WordPress plugin that allows administrators to create notices and
 - Email logging with success/failure tracking
 - Admin-ready architecture (OOP structured)
 - REST API endpoint for notices
+- Dashboard Page
 
 ---
 
 ## 📦 Installation
 
 1. Download or clone the plugin
-2. Place it inside:
+2. Place it inside: plugins folder
+3. Activate it

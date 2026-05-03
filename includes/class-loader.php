@@ -36,6 +36,9 @@ class PNS_Loader {
 
     // API file include
     require_once PNS_PATH . 'includes/class-api.php';
+
+    // Admin Menu file include
+    require_once PNS_PATH . 'includes/class-admin-menu.php';
 	}
 
   /**
@@ -60,6 +63,9 @@ class PNS_Loader {
 
     // API object create
     new PNS_API();
+
+    // Admin Menu object create
+    new PNS_Admin_Menu();
 	}
 
   /**

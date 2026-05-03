@@ -42,7 +42,7 @@ class PNS_CPT {
 
 			'public' => true, // frontend থেকেও accessible
 
-			'show_in_menu' => true, // admin menu show করবে
+			'show_in_menu' => 'pns-dashboard', // admin menu show করবে, 'pns-dashboard' এর submenu হিসেবে
 
 			'menu_icon' => 'dashicons-megaphone',
 
