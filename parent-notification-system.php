@@ -34,7 +34,7 @@ register_activation_hook( __FILE__, array( 'PNS_Roles', 'activate' ) );
 register_activation_hook( __FILE__, array( 'PNS_Email_Queue_Table', 'create_table' ) );
 
 // Email Queue Schedule Setup
-register_activation_hook(__FILE__, array( 'PNS_Email_Queue_Schedule_Setup', 'schedule_email_queue_event' ));
+register_activation_hook( __FILE__, array( 'PNS_Email_Queue_Schedule_Setup', 'schedule_email_queue_event' ) );
 
 // Deactivation Hook
 register_deactivation_hook( __FILE__, array( 'PNS_Roles', 'deactivate' ) );
