@@ -80,8 +80,6 @@ class PNS_Email {
       // Post from post_id
       $post = get_post($post_id);
 
-      write_log("Roles for post ID: $post_id - " . implode(', ', $_POST['pns_roles']));
-
 			$roles = array_map( 'sanitize_text_field', $_POST['pns_roles'] );
 			update_post_meta( $post_id, '_pns_roles', $roles );
 
