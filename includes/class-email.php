@@ -10,30 +10,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class PNS_Email {
 
 	public function __construct() {
-
-		/**
-		 * Meta box add
-		 */
 		add_action( 'add_meta_boxes', array( $this, 'add_notice_metabox' ) );
 
-		/**
-		 * Save checkbox value
-		 */
-		add_action( 'save_post', array( $this, 'save_notice_roles' ) );
-
-		/**
-		 * Publish হলে email send
-		 */
-		add_action( 'transition_post_status', array( $this, 'maybe_send_email' ), 10, 3 );
-
-    add_action( 'pns_send_email_event', array( $this, 'send_notice_email_by_id' ) );
+		add_action( 'save_post_notice_board', array( $this, 'save_notice_roles' ) );
 	}
 
 	/**
 	 * Add meta box
 	 */
 	public function add_notice_metabox() {
-
 		add_meta_box(
 			'pns_notice_roles',
 			'Send Notification To',
@@ -79,7 +64,6 @@ class PNS_Email {
 	 * Save checkbox value
 	 */
 	public function save_notice_roles( $post_id ) {
-
 		if ( ! isset( $_POST['pns_roles_nonce'] ) ) {
 			return;
 		}
@@ -93,109 +77,46 @@ class PNS_Email {
 		}
 
 		if ( isset( $_POST['pns_roles'] ) ) {
+      // Post from post_id
+      $post = get_post($post_id);
+
+      write_log("Roles for post ID: $post_id - " . implode(', ', $_POST['pns_roles']));
 
 			$roles = array_map( 'sanitize_text_field', $_POST['pns_roles'] );
-
 			update_post_meta( $post_id, '_pns_roles', $roles );
 
-		} else {
+      $subject = 'New Post Published: ' . get_the_title($post->ID);
+      $message = "
+          <h2>{$post->post_title}</h2>
+          <p>A new notice has been published on our website.</p>
+          <p><a href='" . get_permalink($post->ID) . "'>Read the full notice</a></p>
+      ";
 
+      global $wpdb;
+      $table = $wpdb->prefix . 'pns_email_queue';
+
+      foreach ( $roles as $role ) {
+        $users = get_users( array(
+          'role' => $role,
+        ) );
+
+        foreach ( $users as $user ) {
+          $email = $user->user_email;
+
+          // Put this emails into the Queue (no wp_mail will send here!)
+          $wpdb->insert(
+            $table,
+            [
+              'email'   => $email,
+              'subject' => $subject,
+              'message' => $message,
+              'status'  => 'pending'
+            ]
+          );
+        }
+      }
+		} else {
 			delete_post_meta( $post_id, '_pns_roles' );
 		}
 	}
-
-  public function maybe_send_email( $new_status, $old_status, $post ) {
-
-    // only our CPT
-    if ( $post->post_type !== 'notice_board' ) {
-      return;
-    }
-
-    // only when publish first time
-    if ( $old_status === 'publish' || $new_status !== 'publish' ) {
-      return;
-    }
-
-    $subject = 'New Post Published: ' . get_the_title($post->ID);
-    $message = "
-        <h2>{$post->post_title}</h2>
-        <p>A new notice has been published on our website.</p>
-        <p><a href='" . get_permalink($post->ID) . "'>Read the full notice</a></p>
-    ";
-
-    $roles = get_post_meta( $post->ID, '_pns_roles', true );
-    if ( empty( $roles ) || ! is_array( $roles ) ) {
-      write_log( "No roles found for post ID: {$post->ID}" );
-      return;
-    }
-
-    global $wpdb;
-
-    foreach ( $roles as $role ) {
-      $users = get_users( array(
-        'role' => $role,
-      ) );
-
-      foreach ( $users as $user ) {
-        $email = $user->user_email;
-
-        // Put this emails into the Queue (no wp_mail will send here!)
-        $wpdb->insert(
-          $wpdb->prefix . 'cta_email_queue',
-          [
-            'email'   => $email,
-            'subject' => $subject,
-            'message' => $message,
-            'status'  => 'pending'
-          ]
-        );
-      }
-    }
-
-    // IMPORTANT: delay execution slightly (meta ready করার জন্য)
-		//wp_schedule_single_event( time() + 100, 'pns_send_email_event', array( $post->ID ) );
-  }
-
-	/**
-	 * Publish হলে email যাবে
-	 */
-	public function send_notice_email_by_id( $post_id ) {
-
-    $post = get_post( $post_id );
-
-    if ( ! $post || $post->post_type !== 'notice_board' ) {
-      return;
-    }
-
-    $roles = get_post_meta( $post_id, '_pns_roles', true );
-
-    if ( empty( $roles ) || ! is_array( $roles ) ) {
-      write_log( "No roles found for post ID: {$post_id}" );
-      return;
-    }
-
-    write_log( "Cron triggered email for post ID: {$post_id}" );
-
-    foreach ( $roles as $role ) {
-
-      $users = get_users( array(
-        'role' => $role,
-      ) );
-
-      foreach ( $users as $user ) {
-
-        $to      = $user->user_email;
-        $subject = $post->post_title;
-        $message = wp_strip_all_tags( $post->post_content );
-
-        $sent = wp_mail( $to, $subject, $message );
-
-        if ( $sent ) {
-          write_log( "Email sent to: {$to}" );
-        } else {
-          write_log( "Email FAILED to: {$to}" );
-        }
-      }
-    }
-  }
 }

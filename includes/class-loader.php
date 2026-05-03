@@ -28,11 +28,11 @@ class PNS_Loader {
     // Mailer file include
     require_once PNS_PATH . 'includes/class-mailer.php';
 
-    // Email file include
-    require_once PNS_PATH . 'includes/class-email.php';
-
     // Email Queue Schedule Setup include
     require_once PNS_PATH . 'includes/email-queue-wp-env-setup.php';
+    
+    // Email file include
+    require_once PNS_PATH . 'includes/class-email.php';
 	}
 
   /**
