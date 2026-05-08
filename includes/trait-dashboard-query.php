@@ -30,6 +30,12 @@ trait PNS_Dashboard_Stats {
       )
     );
 
+    // Total parents count
+    $total_parents = count_users()['avail_roles']['parent'] ?? 0;
+
+    // Total children count
+    $total_children = count_users()['avail_roles']['child'] ?? 0;
+
     $parent_emails = $this->count_role_sent_emails( 'parent' );
     $child_emails = $this->count_role_sent_emails( 'child' );
 
@@ -39,6 +45,8 @@ trait PNS_Dashboard_Stats {
       'total_emails'  => (int) $total_emails,
       'parent_emails' => (int) $parent_emails,
       'child_emails'  => (int) $child_emails,
+      'total_parents' => (int) $total_parents,
+      'total_children' => (int) $total_children,
     ];
   }
 

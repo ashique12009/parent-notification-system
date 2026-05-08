@@ -20,6 +20,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<p>Today's Notices</p>
 		</div>
 
+    <div class="pns-card">
+			<h2><?php echo esc_html( $stats['total_parents'] ); ?></h2>
+			<p>Total Parents</p>
+		</div>
+
+    <div class="pns-card">
+      <h2><?php echo esc_html( $stats['total_children'] ); ?></h2>
+      <p>Total Children</p>
+    </div>
+
 		<div class="pns-card">
 			<h2><?php echo esc_html( $stats['total_emails'] ); ?></h2>
 			<p>Total Emails Sent</p>
