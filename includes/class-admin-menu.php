@@ -7,7 +7,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once PNS_PATH . 'includes/trait-dashboard-query.php';
 
 class PNS_Admin_Menu {
-  
   use PNS_Dashboard_Stats;
 
   public function __construct() {
@@ -57,6 +56,35 @@ class PNS_Admin_Menu {
       [],
       time()
     );
+
+    // Chart.js CDN
+    wp_enqueue_script(
+      'chart-js',
+      'https://cdn.jsdelivr.net/npm/chart.js',
+      [],
+      '4.4.0',
+      true
+    );
+
+    // custom dashboard js
+    wp_enqueue_script(
+      'pns-dashboard-js',
+      plugins_url( 'assets/js/dashboard.js', dirname(__FILE__) ),
+      ['chart-js'],
+      '1.0',
+      true
+    );
+
+    wp_localize_script(
+      'pns-dashboard-js',
+      'pnsChartData',
+      [
+        'parent' => 120,
+        'child'  => 80,
+        'sent'   => 180,
+        'failed' => 20,
+      ]
+    );
   }
 
   /**
@@ -91,6 +119,6 @@ class PNS_Admin_Menu {
    */
   public function dashboard_page() {
     $stats = $this->get_dashboard_stats();
-		require_once PNS_PATH . 'templates/admin/dashboard.php';
+    require_once PNS_PATH . 'templates/admin/dashboard.php';
   }
 }

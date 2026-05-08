@@ -78,3 +78,32 @@
 		flex: 1 1 100%;
 	}
 }
+
+/* Charts */
+.pns-chart-row{
+	display:flex;
+	gap:20px;
+	flex-wrap:wrap;
+	margin-top:25px;
+}
+
+.pns-chart-box{
+	flex:1;
+	min-width:320px;
+	background:#fff;
+	padding:20px;
+	border-radius:14px;
+	border:1px solid #e5e7eb;
+	box-shadow:0 2px 10px rgba(0,0,0,.06);
+}
+
+.pns-chart-box h3{
+	margin-top:0;
+	margin-bottom:15px;
+	font-size:16px;
+}
+
+/* Common */
+.mb-25{
+  margin-bottom:25px;
+}

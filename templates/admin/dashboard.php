@@ -8,6 +8,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<h1>Parent Notification Dashboard</h1>
 
+  <div class="pns-chart-row mb-25">
+
+		<div class="pns-chart-box">
+			<h3>Parent vs Child Emails</h3>
+			<canvas id="roleChart"></canvas>
+		</div>
+
+		<div class="pns-chart-box">
+			<h3>Email Status</h3>
+			<canvas id="statusChart"></canvas>
+		</div>
+
+	</div>
+
 	<div class="pns-grid">
 
 		<div class="pns-card">
