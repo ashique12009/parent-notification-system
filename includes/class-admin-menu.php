@@ -75,17 +75,6 @@ class PNS_Admin_Menu {
       true
     );
 
-    // wp_localize_script(
-    //   'pns-dashboard-js',
-    //   'pnsChartData',
-    //   [
-    //     'parent' => 120,
-    //     'child'  => 80,
-    //     'sent'   => 180,
-    //     'failed' => 20,
-    //   ]
-    // );
-
     /**
      * Pass API URL + nonce
      */
