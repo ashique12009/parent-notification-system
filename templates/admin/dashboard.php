@@ -8,6 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<h1>Parent Notification Dashboard</h1>
 
+  <?php $stats = $this->get_dashboard_stats(); ?>
+
   <div class="pns-chart-row mb-25">
 
 		<div class="pns-chart-box">

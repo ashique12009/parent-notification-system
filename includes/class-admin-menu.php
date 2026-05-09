@@ -119,7 +119,6 @@ class PNS_Admin_Menu {
    * Dashboard Page
    */
   public function dashboard_page() {
-    $stats = $this->get_dashboard_stats();
     require_once PNS_PATH . 'templates/admin/dashboard.php';
   }
 }
