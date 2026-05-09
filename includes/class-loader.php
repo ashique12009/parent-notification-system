@@ -14,11 +14,7 @@ class PNS_Loader {
 	 * object create হলে auto run হয়
 	 */
 	public function __construct() {
-
 		// Future classes include হবে এখানে
-		// Example:
-		// require_once PNS_PATH . 'includes/class-cpt.php';
-
     // CPT file include
 	  require_once PNS_PATH . 'includes/class-cpt.php';
 
@@ -67,13 +63,4 @@ class PNS_Loader {
     // Admin Menu object create
     new PNS_Admin_Menu();
 	}
-
-  /**
-	 * init hook এ run হবে
-	 */
-	public function plugin_init() {
-		// এখন শুধু test message
-		// future এ CPT, roles etc run হবে
-	}
-
 }
