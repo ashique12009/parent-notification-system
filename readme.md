@@ -23,3 +23,9 @@ A professional WordPress plugin that allows administrators to create notices and
 1. Download or clone the plugin
 2. Place it inside: plugins folder
 3. Activate it
+
+## Few Screenshots
+
+<img width="3024" height="2630" alt="Image" src="https://github.com/user-attachments/assets/110014c2-11b0-424f-9dde-10905db0bae2" />
+
+<img width="3024" height="1551" alt="Image" src="https://github.com/user-attachments/assets/25275b7b-c824-4916-9090-ea048623b0fd" />
