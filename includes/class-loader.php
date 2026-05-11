@@ -41,10 +41,6 @@ class PNS_Loader {
 	 * Plugin run function
 	 */
 	public function run() {
-
-		// সব hook/action এখান থেকে call হবে
-		add_action( 'init', array( $this, 'plugin_init' ) );
-
     // CPT object create
 	  new PNS_CPT();
 
